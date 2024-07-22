@@ -1,5 +1,4 @@
-import React from "react";
-
+import React, { useMemo } from "react";
 import Square from "../Square";
 
 interface BoardProps {
@@ -8,7 +7,7 @@ interface BoardProps {
     onPlay: (squares: Array<string>) => void;
 }
 
-function calculateWinner(squares: Array<string>) {
+const calculateWinner = (squares: Array<string>) => {
     const lines = [
         [0, 1, 2],
         [3, 4, 5],
@@ -19,8 +18,7 @@ function calculateWinner(squares: Array<string>) {
         [0, 4, 8],
         [2, 4, 6],
     ];
-    for (let i = 0; i < lines.length; i++) {
-        const [a, b, c] = lines[i];
+    for (const [a, b, c] of lines) {
         if (
             squares[a] &&
             squares[a] === squares[b] &&
@@ -30,78 +28,54 @@ function calculateWinner(squares: Array<string>) {
         }
     }
     return null;
-}
+};
 
 const Board: React.FC<BoardProps> = ({ xIsNext, squares, onPlay }) => {
-    function handleClick(i: number): void {
+    const handleClick = (i: number): void => {
         if (squares[i] || calculateWinner(squares)) {
             return;
         }
 
         const nextSquares = squares.slice();
-        if (xIsNext) {
-            nextSquares[i] = "X";
-        } else {
-            nextSquares[i] = "O";
-        }
+        nextSquares[i] = xIsNext ? "X" : "O";
 
         onPlay(nextSquares);
-    }
+    };
 
-    const winner = calculateWinner(squares);
-    let status: string;
-    if (winner) {
-        status = "Winner: " + winner;
-    } else {
-        status = "Next player: " + (xIsNext ? "X" : "O");
-    }
+    const winner = useMemo(() => calculateWinner(squares), [squares]);
+    const status = winner
+        ? `Winner: ${winner}`
+        : `Next player: ${xIsNext ? "X" : "O"}`;
 
     return (
         <>
             <div className="status">{status}</div>
             <div className="board-row">
-                <Square
-                    value={squares[0]}
-                    onSquareClick={() => handleClick(0)}
-                />
-                <Square
-                    value={squares[1]}
-                    onSquareClick={() => handleClick(1)}
-                />
-                <Square
-                    value={squares[2]}
-                    onSquareClick={() => handleClick(2)}
-                />
+                {squares.slice(0, 3).map((value, index) => (
+                    <Square
+                        key={index}
+                        value={value}
+                        onSquareClick={() => handleClick(index)}
+                    />
+                ))}
             </div>
-
             <div className="board-row">
-                <Square
-                    value={squares[3]}
-                    onSquareClick={() => handleClick(3)}
-                />
-                <Square
-                    value={squares[4]}
-                    onSquareClick={() => handleClick(4)}
-                />
-                <Square
-                    value={squares[5]}
-                    onSquareClick={() => handleClick(5)}
-                />
+                {squares.slice(3, 6).map((value, index) => (
+                    <Square
+                        key={index + 3}
+                        value={value}
+                        onSquareClick={() => handleClick(index + 3)}
+                    />
+                ))}
             </div>
-
             <div className="board-row">
-                <Square
-                    value={squares[6]}
-                    onSquareClick={() => handleClick(6)}
-                />
-                <Square
-                    value={squares[7]}
-                    onSquareClick={() => handleClick(7)}
-                />
-                <Square
-                    value={squares[8]}
-                    onSquareClick={() => handleClick(8)}
-                />
+                {squares.slice(6, 9).map((value, index) => (
+                    <Square
+                        key={index + 6}
+                        value={value}
+                        onSquareClick={() => handleClick(index + 6)}
+                    />
+                ))}
             </div>
         </>
     );
