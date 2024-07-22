@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { memo, useMemo } from "react";
 import Square from "../Square";
 
 interface BoardProps {
@@ -47,38 +47,34 @@ const Board: React.FC<BoardProps> = ({ xIsNext, squares, onPlay }) => {
         ? `Winner: ${winner}`
         : `Next player: ${xIsNext ? "X" : "O"}`;
 
+    const renderSquares = () => {
+        const rows = [];
+        for (let i = 0; i < 3; i++) {
+            const rowSquares = [];
+            for (let j = 0; j < 3; j++) {
+                rowSquares.push(
+                    <Square
+                        key={i * 3 + j}
+                        value={squares[i * 3 + j]}
+                        onSquareClick={() => handleClick(i * 3 + j)}
+                    />
+                );
+            }
+            rows.push(
+                <div key={i} className="board-row">
+                    {rowSquares}
+                </div>
+            );
+        }
+        return rows;
+    };
+
     return (
         <>
             <div className="status">{status}</div>
-            <div className="board-row">
-                {squares.slice(0, 3).map((value, index) => (
-                    <Square
-                        key={index}
-                        value={value}
-                        onSquareClick={() => handleClick(index)}
-                    />
-                ))}
-            </div>
-            <div className="board-row">
-                {squares.slice(3, 6).map((value, index) => (
-                    <Square
-                        key={index + 3}
-                        value={value}
-                        onSquareClick={() => handleClick(index + 3)}
-                    />
-                ))}
-            </div>
-            <div className="board-row">
-                {squares.slice(6, 9).map((value, index) => (
-                    <Square
-                        key={index + 6}
-                        value={value}
-                        onSquareClick={() => handleClick(index + 6)}
-                    />
-                ))}
-            </div>
+            {renderSquares()}
         </>
     );
 };
 
-export default Board;
+export default memo(Board);
