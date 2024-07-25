@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import Board from "../Board";
+import { Button } from "../Button";
 
 import "./styles.css";
 
@@ -20,22 +21,22 @@ const Game: React.FC = () => {
         setCurrentMove(nextMove);
     }
 
-    const moves = history.map((squares, move) => {
-        let description: string;
-        if (move > 0) {
-            description = "Go to move #" + move;
-        } else {
-            description = "Go to game start";
-        }
-        return (
-            <li key={move}>
-                <button onClick={() => jumpTo(move)}>{description}</button>
-            </li>
-        );
-    });
+    function handleGoBack() {
+        const nextMove = currentMove > 0 ? currentMove - 1 : currentMove;
+        jumpTo(nextMove)
+    }
+
+    function handleNewGame() {
+        setHistory([Array(9).fill(null)]);
+        setCurrentMove(0);
+    }
 
     return (
         <div className="game">
+            <div className="game-intro">
+                Welcome to Tic Tac Toe! Take turns to mark your spot and be the
+                first to get three in a row. Let the best player win!
+            </div>
             <div className="game-board">
                 <Board
                     xIsNext={xIsNext}
@@ -43,9 +44,15 @@ const Game: React.FC = () => {
                     onPlay={handlePlay}
                 />
             </div>
-            {/* <div className="game-info">
-                <ol>{moves}</ol>
-            </div> */}
+            <div className="game-footer">
+                <Button.Root>
+                    <Button.ActionButton onClick={handleGoBack}>Go Back</Button.ActionButton>
+                </Button.Root>
+
+                <Button.Root>
+                    <Button.ActionButton onClick={handleNewGame}>New Game</Button.ActionButton>
+                </Button.Root>
+            </div>
         </div>
     );
 };
