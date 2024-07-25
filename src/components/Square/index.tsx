@@ -1,5 +1,7 @@
 import React from "react";
 
+import "./styles.css";
+
 interface SquareProps {
     value: string
     onSquareClick: () => void;

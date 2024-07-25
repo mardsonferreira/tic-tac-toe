@@ -2,6 +2,8 @@ import React, { useState } from "react";
 
 import Board from "../Board";
 
+import "./styles.css";
+
 const Game: React.FC = () => {
     const [history, setHistory] = useState([Array(9).fill(null)]);
     const [currentMove, setCurrentMove] = useState(0);
@@ -41,9 +43,9 @@ const Game: React.FC = () => {
                     onPlay={handlePlay}
                 />
             </div>
-            <div className="game-info">
+            {/* <div className="game-info">
                 <ol>{moves}</ol>
-            </div>
+            </div> */}
         </div>
     );
 };

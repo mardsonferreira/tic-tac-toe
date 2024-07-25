@@ -1,0 +1,12 @@
+.game {
+    display: flex;
+    flex-direction: row;
+    margin: 4% 12%;
+}
+
+.game-board {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}

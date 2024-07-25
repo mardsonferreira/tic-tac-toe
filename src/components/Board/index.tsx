@@ -1,6 +1,8 @@
 import React, { memo, useMemo } from "react";
 import Square from "../Square";
 
+import "./styles.css";
+
 interface BoardProps {
     xIsNext: boolean;
     squares: Array<string>;
@@ -60,21 +62,12 @@ const Board: React.FC<BoardProps> = ({ xIsNext, squares, onPlay }) => {
                     />
                 );
             }
-            rows.push(
-                <div key={i} className="board-row">
-                    {rowSquares}
-                </div>
-            );
+            rows.push(rowSquares);
         }
         return rows;
     };
 
-    return (
-        <>
-            <div className="status">{status}</div>
-            {renderSquares()}
-        </>
-    );
+    return <div className="board">{renderSquares()}</div>;
 };
 
 export default memo(Board);
