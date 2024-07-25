@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 
 import Board from "../Board";
 import { Button } from "../Button";
+
+import { calculateWinner } from "../../util";
 
 import "./styles.css";
 
@@ -10,6 +12,11 @@ const Game: React.FC = () => {
     const [currentMove, setCurrentMove] = useState(0);
     const currentSquares = history[currentMove];
     const xIsNext = currentMove % 2 === 0;
+
+    const winner = useMemo(
+        () => calculateWinner(history[currentMove]),
+        [currentMove, history]
+    );
 
     function handlePlay(nextSquares: Array<string>) {
         const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
@@ -23,7 +30,7 @@ const Game: React.FC = () => {
 
     function handleGoBack() {
         const nextMove = currentMove > 0 ? currentMove - 1 : currentMove;
-        jumpTo(nextMove)
+        jumpTo(nextMove);
     }
 
     function handleNewGame() {
@@ -37,6 +44,7 @@ const Game: React.FC = () => {
                 Welcome to Tic Tac Toe! Take turns to mark your spot and be the
                 first to get three in a row. Let the best player win!
             </div>
+
             <div className="game-board">
                 <Board
                     xIsNext={xIsNext}
@@ -44,13 +52,24 @@ const Game: React.FC = () => {
                     onPlay={handlePlay}
                 />
             </div>
+
+            {winner && (
+                <div className="winner">
+                    The winner is player <span className="winner-status">{winner}</span>
+                </div>
+            )}
+
             <div className="game-footer">
                 <Button.Root>
-                    <Button.ActionButton onClick={handleGoBack}>Go Back</Button.ActionButton>
+                    <Button.ActionButton onClick={handleGoBack}>
+                        Go Back
+                    </Button.ActionButton>
                 </Button.Root>
 
                 <Button.Root>
-                    <Button.ActionButton onClick={handleNewGame}>New Game</Button.ActionButton>
+                    <Button.ActionButton onClick={handleNewGame}>
+                        New Game
+                    </Button.ActionButton>
                 </Button.Root>
             </div>
         </div>
