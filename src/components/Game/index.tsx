@@ -3,7 +3,7 @@ import React, { useState, useMemo } from "react";
 import Board from "../Board";
 import { Button } from "../Button";
 
-import { calculateWinner } from "../../util";
+import { calculateWiner } from "../../util";
 
 import "./styles.css";
 
@@ -14,7 +14,7 @@ const Game: React.FC = () => {
     const xIsNext = currentMove % 2 === 0;
 
     const winner = useMemo(
-        () => calculateWinner(history[currentMove]),
+        () => calculateWiner(history[currentMove]),
         [currentMove, history]
     );
 
@@ -41,8 +41,10 @@ const Game: React.FC = () => {
     return (
         <div className="game">
             <div className="game-intro">
-                Welcome to Tic Tac Toe! Take turns to mark your spot and be the
-                first to get three in a row. Let the best player win!
+                Welcome to{" "}
+                <span className="game-intro-status">Tic-Tac-Toe!</span> Take
+                turns to mark your spot and be the first to get three in a row.
+                Let the best player win!
             </div>
 
             <div className="game-board">
@@ -55,7 +57,8 @@ const Game: React.FC = () => {
 
             {winner && (
                 <div className="winner">
-                    The winner is player <span className="winner-status">{winner}</span>
+                    The winner is player{" "}
+                    <span className="winner-status">{winner}</span>
                 </div>
             )}
 

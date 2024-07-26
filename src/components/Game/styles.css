@@ -12,6 +12,11 @@
     text-align: justify;
 }
 
+.game-intro-status {
+    font-size: 24px;
+    color: #1DB954;
+}
+
 .game-board {
     display: flex;
     width: 100%;

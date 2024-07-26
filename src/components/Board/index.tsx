@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import Square from "../Square";
 
-import { calculateWinner } from "../../util";
+import { calculateWiner, bestMove } from "../../util";
 
 import "./styles.css";
 
@@ -14,12 +14,19 @@ interface BoardProps {
 
 const Board: React.FC<BoardProps> = ({ xIsNext, squares, onPlay }) => {
     const handleClick = (i: number): void => {
-        if (squares[i] || calculateWinner(squares)) {
+        if (squares[i] || calculateWiner(squares)) {
             return;
         }
 
         const nextSquares = squares.slice();
-        nextSquares[i] = xIsNext ? "X" : "O";
+        nextSquares[i] = "X";
+        const move = bestMove(nextSquares);
+
+        console.log(move)
+        if (move) {
+            nextSquares[move.i*3+move.j] = "O"; 
+
+        }
 
         onPlay(nextSquares);
     };
